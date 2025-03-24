@@ -20,7 +20,7 @@
       <tr>
         <th>ID</th>
         <th>Title</th>
-        <th>Author</th>
+        <th>Author ID</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -102,8 +102,8 @@
         tableBody.innerHTML += `
         <tr>
           <td>${book.isbn}</td>
-          <td>${book.author.id}</td>
           <td>${book.title}</td>
+          <td>${book.author.id}</td>
           <td>
             <button class="btn btn-danger btn-sm" onclick="deleteBookById('${book.isbn}')">Delete</button>
           </td>
@@ -148,7 +148,7 @@
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Title: ${book.title}</h5>
-            <p class="card-text">Author: ${book.author.id}</p>
+            <p class="card-text">Author: ${book.author.name}</p>
           </div>
         </div>
       `;

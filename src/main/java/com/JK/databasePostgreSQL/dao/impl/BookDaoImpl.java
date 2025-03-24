@@ -45,7 +45,10 @@ public class BookDaoImpl implements BookDao {
     public Optional<Book> readOne(String isbn) {
         try {
             Book book = jdbcTemplate.queryForObject(
-                    "SELECT * FROM author_books WHERE isbn = ?",
+                    "SELECT ab.isbn, ab.title, a.id AS author_id, a.name, a.age " +
+                            "FROM author_books ab " +
+                            "JOIN authors a ON ab.author_id = a.id " +
+                            "WHERE ab.isbn = ?",
                     new BookRowMapper(),
                     isbn
             );
@@ -58,8 +61,11 @@ public class BookDaoImpl implements BookDao {
     @Override
     public List<Book> readAll() {
         List<Book> bookList = jdbcTemplate.query(
-                "SELECT * FROM author_books",
-                new BookRowMapper());
+                "SELECT ab.isbn, ab.title, a.id AS author_id, a.name, a.age " +
+                        "FROM author_books ab " +
+                        "JOIN authors a ON ab.author_id = a.id",
+                new BookRowMapper()
+        );
         return bookList.stream().toList();
     }
 
@@ -128,6 +134,8 @@ public class BookDaoImpl implements BookDao {
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Author author = Author.builder()
                     .id(rs.getLong("author_id"))
+                    .name(rs.getString("name"))
+                    .age(rs.getInt("age"))
                     .build();
 
             return Book.builder()
